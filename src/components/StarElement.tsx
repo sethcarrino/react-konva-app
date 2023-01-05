@@ -82,28 +82,28 @@ function StarShape({star, isSelected, index}: StarElementProps) {
     return (
       <>
         <Star
-            id={star.id}
-            ref={shapeRef}
-            x={star.x}
-            y={star.y}
-            numPoints={star.numPoints}
-            innerRadius={20}
-            outerRadius={40}
-            fill={randomColor}
-            opacity={0.8}
-            draggable={!star.locked}
-            rotation={star.rotation}
-            shadowColor="black"
-            shadowBlur={10}
-            shadowOpacity={0.6}
-            onMouseDown={() => {
-              setSelectedElement(star.id);
-            }}
-            shadowOffsetX={star.isDragging ? 10 : 5}
-            shadowOffsetY={star.isDragging ? 10 : 5}
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
-            onTransformEnd={handleTransform}
+          id={star.id}
+          ref={shapeRef}
+          x={star.x}
+          y={star.y}
+          numPoints={star.numPoints}
+          innerRadius={20}
+          outerRadius={40}
+          fill={randomColor}
+          opacity={0.8}
+          draggable={!star.locked}
+          rotation={star.rotation}
+          shadowColor="black"
+          shadowBlur={10}
+          shadowOpacity={0.6}
+          onMouseDown={() => {
+            setSelectedElement(star.id);
+          }}
+          shadowOffsetX={star.isDragging ? 10 : 5}
+          shadowOffsetY={star.isDragging ? 10 : 5}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          onTransformEnd={handleTransform}
         />
         {isSelected && !star.locked && 
           <Transformer 
