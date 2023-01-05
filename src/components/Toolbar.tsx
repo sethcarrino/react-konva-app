@@ -3,12 +3,6 @@ import { observer } from "mobx-react-lite";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useStore } from "../store/design";
 
-const buttonStyles = {
-  borderRadius: 6,
-  cursor: "pointer"
-}
-
-
 function ToolbarImpl() {
   const [cursorCoordinates, setCursorCoordinates] = useState<any>({ x: 0, y: 0 });
   const { selectedElement, updateElementPoints, selectedElementId, toggleElementLock } = useStore();
@@ -55,7 +49,7 @@ function ToolbarImpl() {
           />
           <p style={{margin: '0'}}>{`Coords: ${cursorCoordinates.x}, ${cursorCoordinates.y}`}</p>
           <div style={{ display: 'flex', flexDirection: 'column'}}>
-            <button style={buttonStyles} className="button-alt" onClick={() => toggleElementLock(selectedElementId)}>{selectedElement?.locked ? "Unlock" : "Lock"}</button>
+            <button className="button-alt" onClick={() => toggleElementLock(selectedElementId)}>{selectedElement?.locked ? "Unlock" : "Lock"}</button>
           </div>
         </div>
       }
