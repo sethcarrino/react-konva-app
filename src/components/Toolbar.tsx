@@ -46,6 +46,7 @@ function ToolbarImpl() {
               const count = e.target.value;
               updateElementPoints(selectedElementId, count)
             }} 
+            disabled={selectedElement?.locked}
           />
           <p style={{margin: '0'}}>{`Coords: ${cursorCoordinates.x}, ${cursorCoordinates.y}`}</p>
           <div style={{ display: 'flex', flexDirection: 'column'}}>
