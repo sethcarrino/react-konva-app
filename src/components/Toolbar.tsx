@@ -10,11 +10,13 @@ const buttonStyles = {
 
 
 function ToolbarImpl() {
-  const [cursorCoordinates, setCursorCoordinates] = useState({ x: 0, y: 0 });
+  const [cursorCoordinates, setCursorCoordinates] = useState<any>({ x: 0, y: 0 });
   const { selectedElement, updateElementPoints, selectedElementId, toggleElementLock } = useStore();
 
   const setNewCoords = (event: MouseEvent) => {
-    setCursorCoordinates({ x: event.clientX, y: event.clientY })
+    const x = selectedElement?.x ? Math.round(selectedElement.x) : 0;
+    const y = selectedElement?.y ? Math.round(selectedElement.y) : 0;
+    setCursorCoordinates({ x, y })
   };
 
   useEffect(() => {

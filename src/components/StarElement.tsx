@@ -39,17 +39,22 @@ function StarShape({star, isSelected, index}: StarElementProps) {
           return {
             ...el,
             isDragging: el.id === id,
+            x: el.id === id ? e.target.x() : el.x,
+            y: el.id === id ? e.target.y() : el.y
           };
         })
       );
     };
 
     const handleDragEnd = (e: any) => {
+      const id = e.target.id();
       setElements(
         elements.map((el) => {
           return {
             ...el,
             isDragging: false,
+            x: el.id === id ? e.target.x() : el.x,
+            y: el.id === id ? e.target.y() : el.y
           };
         })
       );
