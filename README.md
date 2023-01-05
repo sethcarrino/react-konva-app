@@ -18,21 +18,21 @@ Expected Time: < 5 hours
 
 - Expand `src/components/Toolbar.tsx` to include:
 
-  - Slider that changes the number of points on the selected star
-  - Display the current _Konva_ coordinates of the cursor
+  - Slider that changes the number of points on the selected star [+]
+  - Display the current _Konva_ coordinates of the cursor [+]
 
 - Add a Konva transformer to the current selected Konva node:
 
-  - Customize the visual appearance of the transformer however you like
+  - Customize the visual appearance of the transformer however you like [+]
 
 ### Extra Credit
 
 Please don't burn too much of your own time, but here are some extra customizations if you're feeling up to it!
 
-- Randomize color of stars
+- Randomize color of stars [+]
 - Change size of star when dragging
-- Add a button that locks/unlocks the currently selected element.
-- Add a button that exports the current Konva canvas to a JPEG
+- Add a button that locks/unlocks the currently selected element. [+]
+- Add a button that exports the current Konva canvas to a JPEG [+]
 
 ## Documentation
 

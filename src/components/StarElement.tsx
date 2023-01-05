@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useMemo } from 'react';
 import { Star, Transformer } from "react-konva";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../store/design";
@@ -10,17 +10,69 @@ type StarElementProps = {
   index: number;
 }
 
+const transformerOptions = {
+  anchorFill: '#90ee90',
+  anchorCornerRadius: 500,
+  anchorSize: 12,
+  borderStrokeWidth: 2,
+}
+
+const colors = ["red", "blue", "yellow", "green", "white", "brown", "gray"]
+
 function StarShape({star, isSelected, index}: StarElementProps) {
     const { elements, setSelectedElement, setElements } = useStore();
     const shapeRef: any = useRef();
     const trRef: any = useRef();
+    const randomColor = useMemo(() => colors[Math.floor(Math.random()*colors.length)], []);
 
     useEffect(() => {
-        if (isSelected) {
+        if (isSelected && !star.locked) {
             trRef.current.nodes([shapeRef.current]);
             trRef.current.getLayer().batchDraw();
         }
     }, [isSelected]);
+
+    const handleDragStart = (e: any) => {
+      const id = e.target.id();
+      setElements(
+        elements.map((el) => {
+          return {
+            ...el,
+            isDragging: el.id === id,
+          };
+        })
+      );
+    };
+
+    const handleDragEnd = (e: any) => {
+      setElements(
+        elements.map((el) => {
+          return {
+            ...el,
+            isDragging: false,
+          };
+        })
+      );
+    };
+
+    const handleTransform = (e: any) => {
+      const node: any = shapeRef.current;
+
+      if(node) {
+        const scaleX = node.scaleX();
+        const scaleY = node.scaleY();
+        
+        const els = elements.slice();
+        els[index] = {
+          ...star,
+          x: node.x(),
+          y: node.y(),
+          width: Math.max(5, node.width() * scaleX),
+          height: Math.max(node.height() * scaleY),
+        };
+        setElements(els);
+      }
+    } 
 
     return (
       <>
@@ -32,9 +84,9 @@ function StarShape({star, isSelected, index}: StarElementProps) {
             numPoints={star.numPoints}
             innerRadius={20}
             outerRadius={40}
-            fill="#89b717"
+            fill={randomColor}
             opacity={0.8}
-            draggable
+            draggable={!star.locked}
             rotation={star.rotation}
             shadowColor="black"
             shadowBlur={10}
@@ -42,37 +94,25 @@ function StarShape({star, isSelected, index}: StarElementProps) {
             onMouseDown={() => {
               setSelectedElement(star.id);
             }}
-            onTransformEnd={(e) => {
-              const node: any = shapeRef.current;
-
-              if(node) {
-                const scaleX = node.scaleX();
-                const scaleY = node.scaleY();
-                
-                const els = elements.slice();
-                els[index] = {
-                  ...star,
-                  x: node.x(),
-                  y: node.y(),
-                  width: Math.max(5, node.width() * scaleX),
-                  height: Math.max(node.height() * scaleY),
-                };
-                setElements(els);
+            shadowOffsetX={star.isDragging ? 10 : 5}
+            shadowOffsetY={star.isDragging ? 10 : 5}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+            onTransformEnd={handleTransform}
+        />
+        {isSelected && !star.locked && 
+          <Transformer 
+            ref={trRef}
+            boundBoxFunc={(oldBox, newBox) => {
+              if (newBox.width < 5 || newBox.height < 5) {
+                return oldBox;
               }
+              return newBox;
             }}
+            {...transformerOptions}
           />
-          {isSelected && 
-            <Transformer 
-              ref={trRef}
-              boundBoxFunc={(oldBox, newBox) => {
-                if (newBox.width < 5 || newBox.height < 5) {
-                  return oldBox;
-                }
-                return newBox;
-              }}
-            />
-          }
-        </>
+        }
+      </>
     )
 }
 

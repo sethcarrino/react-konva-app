@@ -11,16 +11,14 @@ const ElementAttrs = {
   scaleY: types.optional(types.number, 1),
   rotation: 0,
   opacity: 1,
-
+  isDragging: false,
   locked: false,
   numPoints: 5,
-
   shadowEnabled: false,
   shadowBlur: 5,
   shadowOffsetX: 0,
   shadowOffsetY: 0,
   shadowColor: "black",
-
   custom: types.frozen(),
 };
 

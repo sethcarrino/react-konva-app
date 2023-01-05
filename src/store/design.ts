@@ -34,6 +34,14 @@ export const Store = types
       els[elementIndex] = {...element, numPoints: parseInt(pointCount)}
 
       self.elements = els;
+    },
+    toggleElementLock: (elementId: string | any) => {
+      const els: ElementType[] | any = [...self.elements];
+      const elementIndex = els.findIndex((el: ElementType) => el.id === elementId);
+      const element = els[elementIndex];
+      els[elementIndex] = {...element, locked: !element.locked}
+
+      self.elements = els;
     }
   }))
   .views((self) => ({

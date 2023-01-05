@@ -3,12 +3,18 @@ import { observer } from "mobx-react-lite";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useStore } from "../store/design";
 
+const buttonStyles = {
+  borderRadius: 6,
+  cursor: "pointer"
+}
+
 
 function ToolbarImpl() {
-  const { selectedElement, updateElementPoints, selectedElementId } = useStore();
+  const [cursorCoordinates, setCursorCoordinates] = useState({ x: 0, y: 0 });
+  const { selectedElement, updateElementPoints, selectedElementId, toggleElementLock } = useStore();
 
   const setNewCoords = (event: MouseEvent) => {
-    // get Konva coords
+    setCursorCoordinates({ x: event.clientX, y: event.clientY })
   };
 
   useEffect(() => {
@@ -25,15 +31,14 @@ function ToolbarImpl() {
         position: "fixed",
         top: "10px",
         left: "10px",
-        width: "150px",
-        height: "60px",
         display: "flex",
         padding: "10px",
         gap: "10px",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        background: "grey",
+        background: "lightgrey",
+        borderRadius: "8px"
       }}
     >
       <input 
@@ -44,7 +49,10 @@ function ToolbarImpl() {
           updateElementPoints(selectedElementId, count)
         }} 
       />
-      <p style={{margin: '0'}}>{`Coords: ${120}, ${80}`}</p>
+      <p style={{margin: '0'}}>{`Coords: ${cursorCoordinates.x}, ${cursorCoordinates.y}`}</p>
+      <div style={{ display: 'flex', flexDirection: 'column'}}>
+        {selectedElementId && <button style={buttonStyles} className="button-alt" onClick={() => toggleElementLock(selectedElementId)}>{selectedElement?.locked ? "Unlock" : "Lock"}</button>}
+      </div>
     </div>
   );
 }
